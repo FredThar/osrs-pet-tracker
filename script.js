@@ -71,6 +71,7 @@ const methodData = {
 
 // Calculate cumulative chance given number of actions
 function getCumulativeChance(actions, dropRate) {
+    if (actions === 0) return 0;
     const probabilityPerAction = 1 / dropRate;
     const cumulativeChance = 1 - Math.pow(1 - probabilityPerAction, actions);
     return cumulativeChance * 100;
@@ -107,12 +108,16 @@ function formatNumber(num) {
 
 // Update pet selection and methods
 function updatePetSelection() {
-    console.log('updatePetSelection called');
     const petSelect = document.getElementById('petSelect');
     const methodSelect = document.getElementById('methodSelect');
     
-    if (!petSelect || !methodSelect) {
-        console.error('DOM elements not found');
+    if (!petSelect) {
+        console.error('petSelect element not found');
+        return;
+    }
+    
+    if (!methodSelect) {
+        console.error('methodSelect element not found');
         return;
     }
     
@@ -120,22 +125,24 @@ function updatePetSelection() {
     const pet = pets[petKey];
     
     if (!pet) {
-        console.error('Pet not found:', petKey);
+        console.error('Pet not found for key:', petKey);
         return;
     }
-    
-    console.log('Selected pet:', petKey, 'Methods:', pet.methods);
     
     // Clear existing options
     methodSelect.innerHTML = '';
     
     // Add new options
     pet.methods.forEach(method => {
+        if (!methodData[method]) {
+            console.warn('Method data not found for:', method);
+            return;
+        }
+        
         const option = document.createElement('option');
         option.value = method;
-        option.textContent = methodData[method] ? methodData[method].name : method;
+        option.textContent = methodData[method].name;
         methodSelect.appendChild(option);
-        console.log('Added option:', method, methodData[method].name);
     });
     
     updateStats();
@@ -150,21 +157,27 @@ function updateStats() {
     const inputActions = document.getElementById('inputActions');
     const inputChance = document.getElementById('inputChance');
     
-    if (!petSelect || !methodSelect || !currentLevel || !currentXP) {
-        console.error('Some DOM elements not found in updateStats');
+    if (!petSelect || !methodSelect || !currentLevel || !currentXP || !inputActions || !inputChance) {
+        console.error('Some form elements not found');
         return;
     }
     
     const petKey = petSelect.value;
     const pet = pets[petKey];
+    if (!pet) return;
+    
     const level = parseInt(currentLevel.value) || 1;
     const xp = parseInt(currentXP.value) || 0;
     const actions = parseInt(inputActions.value) || 0;
     const chance = parseFloat(inputChance.value) || 0;
     
     const method = methodSelect.value;
-    const xpPerAction = methodData[method] ? methodData[method].xpPerAction : 1;
+    if (!methodData[method]) {
+        console.warn('Method data not found for:', method);
+        return;
+    }
     
+    const xpPerAction = methodData[method].xpPerAction;
     const dropRate = pet.formula(level);
     
     // Determine actions: prioritize input actions, then calculate from XP
@@ -197,13 +210,15 @@ function calculateGoal() {
     const inputChance = document.getElementById('inputChance');
     const goalChance = document.getElementById('goalChance');
     
-    if (!petSelect || !methodSelect || !currentLevel || !currentXP || !goalChance) {
-        console.error('Some DOM elements not found in calculateGoal');
+    if (!petSelect || !methodSelect || !currentLevel || !currentXP || !inputActions || !inputChance || !goalChance) {
+        console.error('Some elements not found in calculateGoal');
         return;
     }
     
     const petKey = petSelect.value;
     const pet = pets[petKey];
+    if (!pet) return;
+    
     const level = parseInt(currentLevel.value) || 1;
     const xp = parseInt(currentXP.value) || 0;
     const actions = parseInt(inputActions.value) || 0;
@@ -211,7 +226,12 @@ function calculateGoal() {
     const goal = parseFloat(goalChance.value) || 95;
     const method = methodSelect.value;
     
-    const xpPerAction = methodData[method] ? methodData[method].xpPerAction : 1;
+    if (!methodData[method]) {
+        console.warn('Method data not found for:', method);
+        return;
+    }
+    
+    const xpPerAction = methodData[method].xpPerAction;
     const dropRate = pet.formula(level);
     
     // Determine starting actions
@@ -221,7 +241,6 @@ function calculateGoal() {
     let currentChance;
     if (chance > 0) {
         currentChance = chance;
-        // Calculate actions from chance if not provided
         if (actions === 0) {
             actionsMined = getActionsNeeded(chance, dropRate);
         }
@@ -237,40 +256,35 @@ function calculateGoal() {
     const finalLevel = getLevelFromXP(finalXP);
     
     // Display results
-    const resultCurrentChance = document.getElementById('resultCurrentChance');
-    const resultGoalChance = document.getElementById('resultGoalChance');
-    const resultActionsNeeded = document.getElementById('resultActionsNeeded');
-    const resultXPNeeded = document.getElementById('resultXPNeeded');
-    const resultResourcesNeeded = document.getElementById('resultResourcesNeeded');
-    const resultNewLevel = document.getElementById('resultNewLevel');
-    const resultFinalXP = document.getElementById('resultFinalXP');
-    const progressFill = document.getElementById('progressFill');
-    const currentChanceLabel = document.getElementById('currentChanceLabel');
-    const goalChanceLabel = document.getElementById('goalChanceLabel');
-    const resultsSection = document.getElementById('resultsSection');
-    
-    if (resultCurrentChance) resultCurrentChance.textContent = currentChance.toFixed(2) + '%';
-    if (resultGoalChance) resultGoalChance.textContent = goal.toFixed(2) + '%';
-    if (resultActionsNeeded) resultActionsNeeded.textContent = formatNumber(additionalActionsNeeded);
-    if (resultXPNeeded) resultXPNeeded.textContent = formatNumber(additionalXPNeeded);
-    if (resultResourcesNeeded) resultResourcesNeeded.textContent = formatNumber(additionalActionsNeeded) + ' ' + (methodData[method] ? methodData[method].name : method);
-    if (resultNewLevel) resultNewLevel.textContent = finalLevel;
-    if (resultFinalXP) resultFinalXP.textContent = formatNumber(finalXP);
+    document.getElementById('resultCurrentChance').textContent = currentChance.toFixed(2) + '%';
+    document.getElementById('resultGoalChance').textContent = goal.toFixed(2) + '%';
+    document.getElementById('resultActionsNeeded').textContent = formatNumber(additionalActionsNeeded);
+    document.getElementById('resultXPNeeded').textContent = formatNumber(additionalXPNeeded);
+    document.getElementById('resultResourcesNeeded').textContent = formatNumber(additionalActionsNeeded) + ' ' + methodData[method].name;
+    document.getElementById('resultNewLevel').textContent = finalLevel;
+    document.getElementById('resultFinalXP').textContent = formatNumber(finalXP);
     
     // Update progress bar
     const progressPercent = (currentChance / goal) * 100;
+    const progressFill = document.getElementById('progressFill');
     if (progressFill) progressFill.style.width = Math.min(progressPercent, 100) + '%';
     
-    if (currentChanceLabel) currentChanceLabel.textContent = currentChance.toFixed(2) + '%';
-    if (goalChanceLabel) goalChanceLabel.textContent = goal.toFixed(2) + '%';
+    document.getElementById('currentChanceLabel').textContent = currentChance.toFixed(2) + '%';
+    document.getElementById('goalChanceLabel').textContent = goal.toFixed(2) + '%';
     
     // Show results section
-    if (resultsSection) resultsSection.style.display = 'block';
+    document.getElementById('resultsSection').style.display = 'block';
 }
 
-// Wait for DOM to be fully loaded before adding event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing...');
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    initializeApp();
+}
+
+function initializeApp() {
+    console.log('Initializing app...');
     
     const petSelect = document.getElementById('petSelect');
     const currentLevel = document.getElementById('currentLevel');
@@ -280,6 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const methodSelect = document.getElementById('methodSelect');
     const calculateBtn = document.getElementById('calculateBtn');
     
+    // Add event listeners
     if (petSelect) petSelect.addEventListener('change', updatePetSelection);
     if (currentLevel) currentLevel.addEventListener('input', updateStats);
     if (currentXP) currentXP.addEventListener('input', updateStats);
@@ -288,6 +303,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (methodSelect) methodSelect.addEventListener('change', updateStats);
     if (calculateBtn) calculateBtn.addEventListener('click', calculateGoal);
     
-    // Initialize on page load
+    // Initialize dropdown with first pet
     updatePetSelection();
-});
+    
+    console.log('App initialized successfully');
+}

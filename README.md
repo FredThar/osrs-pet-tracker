@@ -4,9 +4,15 @@ A comprehensive tracker for Old School RuneScape (OSRS) skilling pets that calcu
 
 ## Features
 
+✨ **Multi-Pet Support**
+- Track Rock Golem (Mining), Heron (Fishing), or Giant Squirrel (Agility)
+- Switch between pets instantly
+- Each pet has its own drop rate formula and training methods
+
 ✨ **Current Status Tracking**
-- Input your current Mining level and XP
-- Select your mining method
+- Input your current level and XP
+- Optionally input your actions mined or cumulative chance directly
+- Select your training method
 - View your current drop rate and cumulative chance
 - See how many actions you've completed
 
@@ -15,7 +21,7 @@ A comprehensive tracker for Old School RuneScape (OSRS) skilling pets that calcu
 - Get precise calculations for:
   - Actions needed to reach your goal
   - XP required
-  - Resources needed (ores, etc.)
+  - Resources needed
   - Estimated new level
   - Final XP total
 
@@ -29,57 +35,64 @@ A comprehensive tracker for Old School RuneScape (OSRS) skilling pets that calcu
 ### Web App
 
 1. Open `index.html` in your browser (or access via GitHub Pages)
-2. Enter your current Mining level
-3. Input your current XP (optional - defaults to 0)
-4. Select your mining method from the dropdown
-5. View your current cumulative chance and drop rate
-6. Set your target cumulative chance percentage
-7. Click "Calculate" to see your projection
+2. Select the pet you want to track from the dropdown
+3. Enter your current level
+4. Input your current XP (optional)
+5. Select your training method from the dropdown
+6. (Optional) Input your actions mined or cumulative chance directly
+7. View your current stats
+8. Set your target cumulative chance percentage
+9. Click "Calculate" to see your projection
 
-### Drop Rate Formula
+## Supported Pets
 
-The Rock Golem pet drop rate is calculated using the OSRS formula:
-
-```
-Drop Rate = 306,250 / (1 + (Mining Level / 25))
-```
-
-This means:
+### Rock Golem (Mining)
+- **Drop Rate Formula**: `306,250 / (1 + (Level / 25))`
 - **Level 1**: 1 in 306,250
 - **Level 99**: 1 in ~136,744
+- **Methods**: Copper, Tin, Iron, Coal, Gold, Mithril, Adamantite, Runite, Motherlode, Amethyst
+
+### Heron (Fishing)
+- **Drop Rate Formula**: `500,000 / (1 + (Level / 50))`
+- **Level 1**: 1 in 500,000
+- **Level 99**: 1 in ~333,333
+- **Methods**: Shrimp, Anchovies, Sardines, Herring, Mackerel, Trout, Salmon, Tuna, Lobster, Swordfish
+
+### Giant Squirrel (Agility)
+- **Drop Rate Formula**: `750,000 / (1 + (Level / 75))`
+- **Level 1**: 1 in 750,000
+- **Level 99**: 1 in ~500,000
+- **Methods**: Gnome Stronghold, Wilderness, Ape Atoll, Falador, Barbarian, Penguin, Seers', Pollnivneach, Rellekka, Ardougne
+
+## Calculation Details
+
+### What is "Cumulative Chance"?
+
+Cumulative chance is the probability that you've received **at least one** pet by the time you've completed N actions.
+
+**Example:**
+- Drop rate: 1 in 200,000
+- After 100,000 actions: ~39.3% cumulative chance
+- After 200,000 actions: ~63.2% cumulative chance
+- After 300,000 actions: ~77.9% cumulative chance
 
 ### Cumulative Chance Formula
-
-The cumulative chance after N actions is:
 
 ```
 Cumulative Chance = 1 - (1 - 1/DropRate)^Actions
 ```
 
-This accounts for the probability that you've received at least one pet by the time you've completed N mining actions.
+### Action vs XP
 
-## Supported Mining Methods
+The tracker uses **actions** (number of resources obtained), not XP, for probability calculations. Each action gives you one independent roll for the pet, regardless of how much XP it grants.
 
-- Copper Ore (17.5 XP each)
-- Tin Ore (17.5 XP each)
-- Iron Ore (35 XP each)
-- Coal Ore (50 XP each)
-- Gold Ore (65 XP each)
-- Mithril Ore (100 XP each)
-- Adamantite Ore (95 XP each)
-- Runite Ore (125 XP each)
-- Motherlode Mine (60 XP average)
-- Amethyst (240 XP each)
+The tracker converts your XP to actions based on your selected method's XP per action.
 
-## Google Sheets Version
+### Inputting Your Own Values
 
-A Google Sheets version is also available for offline use and easy sharing. The spreadsheet includes:
-- Automatic calculations based on your inputs
-- Drop rate scaling by level
-- Cumulative chance calculations
-- Goal projections
-
-[Link to Google Sheets](#) *(To be added)*
+You can optionally input:
+- **Actions Mined**: Direct number of actions completed (overrides XP calculation)
+- **Cumulative Chance %**: Your current chance percentage (if you're tracking from external sources)
 
 ## Files
 
@@ -88,44 +101,26 @@ A Google Sheets version is also available for offline use and easy sharing. The 
 - `script.js` - All calculations and logic
 - `README.md` - This file
 
-## Calculation Details
-
-### What is "Cumulative Chance"?
-
-Cumulative chance is the probability that you've received **at least one** Rock Golem pet by the time you've completed N mining actions.
-
-**Example:**
-- Drop rate: 1 in 200,000
-- After 100,000 actions: ~39.3% cumulative chance
-- After 200,000 actions: ~63.2% cumulative chance
-- After 300,000 actions: ~77.9% cumulative chance
-
-### How it's Different from XP
-
-This tracker uses **actions** (number of ores mined), not XP, for probability calculations. Each action gives you one independent roll for the pet, regardless of how much XP it grants.
-
-The tracker converts your XP to actions based on your selected mining method's XP per ore.
-
 ## Important Notes
 
 ⚠️ **Accuracy Disclaimer:**
 - Calculations are based on drop rates from the OSRS Wiki
 - Actual results may vary due to randomness
-- The tracker assumes you're actively mining (not AFK timing out)
+- The tracker assumes you're actively training (not timing out)
 - Different methods may have slight variations in rates
 
 ## Data Source
 
 All drop rates and game mechanics are sourced from:
-- [OSRS Wiki - Rock Golem](https://oldschool.runescape.wiki/w/Rock_golem)
+- [OSRS Wiki](https://oldschool.runescape.wiki/)
 
 ## Future Features
 
-- Support for additional pets (Heron, Giant Squirrel, etc.)
 - Historical tracking (log your progress over time)
 - XP/hour calculations
-- Time estimates based on mining rates
+- Time estimates based on training rates
 - Export/share results
+- Additional pets as support expands
 
 ## License
 
@@ -133,4 +128,4 @@ This project is open source and available under the MIT License.
 
 ---
 
-Good luck getting your pet! 🪨✨
+Good luck getting your pet! 🎯✨

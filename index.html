@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSRS Rock Golem Pet Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🪨 OSRS Rock Golem Pet Tracker</h1>
+            <p>Track your cumulative chance and project how far you need to go</p>
+        </header>
+
+        <div class="content">
+            <!-- Input Section -->
+            <section class="input-section">
+                <h2>Current Status</h2>
+                <div class="form-group">
+                    <label for="currentLevel">Mining Level:</label>
+                    <input type="number" id="currentLevel" min="1" max="99" value="50" placeholder="50">
+                </div>
+
+                <div class="form-group">
+                    <label for="currentXP">Current XP:</label>
+                    <input type="number" id="currentXP" min="0" value="0" placeholder="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="miningMethod">Mining Method:</label>
+                    <select id="miningMethod">
+                        <option value="copper">Copper Ore</option>
+                        <option value="tin">Tin Ore</option>
+                        <option value="iron">Iron Ore</option>
+                        <option value="coal">Coal Ore</option>
+                        <option value="gold">Gold Ore</option>
+                        <option value="mithril">Mithril Ore</option>
+                        <option value="adamantite">Adamantite Ore</option>
+                        <option value="runite">Runite Ore</option>
+                        <option value="motherlode">Motherlode Mine</option>
+                        <option value="amethyst">Amethyst</option>
+                    </select>
+                </div>
+
+                <div class="stats-display">
+                    <div class="stat">
+                        <span class="stat-label">Drop Rate:</span>
+                        <span class="stat-value" id="dropRate">1 in 306,250</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Cumulative Chance:</span>
+                        <span class="stat-value" id="cumulativeChance">0.00%</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Actions Mined:</span>
+                        <span class="stat-value" id="actionsMined">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Goal Section -->
+            <section class="goal-section">
+                <h2>Set Goal</h2>
+                <div class="form-group">
+                    <label for="goalChance">Target Cumulative Chance (%):</label>
+                    <input type="number" id="goalChance" min="0" max="100" step="0.01" value="95" placeholder="95">
+                </div>
+
+                <button id="calculateBtn" class="calculate-btn">Calculate</button>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <h2>Projection to Goal</h2>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="currentChanceLabel">0.00%</span>
+                        <span id="goalChanceLabel">95.00%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <table class="results-table">
+                    <tr>
+                        <td class="label">Current Cumulative Chance:</td>
+                        <td class="value" id="resultCurrentChance">0.00%</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Goal Cumulative Chance:</td>
+                        <td class="value" id="resultGoalChance">95.00%</td>
+                    </tr>
+                    <tr class="separator">
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Additional Actions Needed:</td>
+                        <td class="value" id="resultActionsNeeded">-</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Additional XP Needed:</td>
+                        <td class="value" id="resultXPNeeded">-</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Additional Resources Needed:</td>
+                        <td class="value" id="resultResourcesNeeded">-</td>
+                    </tr>
+                    <tr class="separator">
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">New Level (Estimated):</td>
+                        <td class="value" id="resultNewLevel">-</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Final XP:</td>
+                        <td class="value" id="resultFinalXP">-</td>
+                    </tr>
+                </table>
+
+                <div class="info-box">
+                    <p><strong>Note:</strong> Calculations assume consistent mining rates. Actual results may vary based on mining speed and method efficiency.</p>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>Data sourced from <a href="https://oldschool.runescape.wiki/w/Rock_golem" target="_blank">OSRS Wiki</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

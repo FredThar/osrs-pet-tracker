@@ -20,6 +20,27 @@ const pets = {
         baseRate: 750000,
         formula: (level) => 750000 / (1 + (level / 75)),
         methods: ['gnomeStronghold', 'wildernessCourse', 'apeAtoll', 'falador', 'barbarian', 'penguin', 'seers', 'pollnivneach', 'rellekka', 'ardougne']
+    },
+    chinchompa: {
+        name: 'Baby Chinchompa',
+        skill: 'Hunter',
+        baseRate: 550000,
+        formula: (level) => 550000 / (1 + (level / 40)),
+        methods: ['greenwoodTrap', 'redchinTrap', 'blackchinTrap', 'kebbits', 'salamanders', 'pawya', 'eyeless']
+    },
+    beaver: {
+        name: 'Beaver',
+        skill: 'Woodcutting',
+        baseRate: 400000,
+        formula: (level) => 400000 / (1 + (level / 30)),
+        methods: ['normal', 'oak', 'willow', 'maple', 'yew', 'magic', 'redwood']
+    },
+    soupPet: {
+        name: 'Soup Pet',
+        skill: 'Cooking',
+        baseRate: 600000,
+        formula: (level) => 600000 / (1 + (level / 45)),
+        methods: ['bread', 'stew', 'curry', 'pizza', 'bake', 'cook']
     }
 };
 
@@ -66,7 +87,30 @@ const methodData = {
     seers: { name: 'Seers\' Village', xpPerAction: 570 },
     pollnivneach: { name: 'Pollnivneach', xpPerAction: 463 },
     rellekka: { name: 'Rellekka', xpPerAction: 1114 },
-    ardougne: { name: 'Ardougne Course', xpPerAction: 793.5 }
+    ardougne: { name: 'Ardougne Course', xpPerAction: 793.5 },
+    // Hunter
+    greenwoodTrap: { name: 'Greenwood Trap', xpPerAction: 33.4 },
+    redchinTrap: { name: 'Red Chinchompa Trap', xpPerAction: 265 },
+    blackchinTrap: { name: 'Black Chinchompa Trap', xpPerAction: 315 },
+    kebbits: { name: 'Kebbits', xpPerAction: 48 },
+    salamanders: { name: 'Salamanders', xpPerAction: 319 },
+    pawya: { name: 'Pawya', xpPerAction: 148 },
+    eyeless: { name: 'Eyeless Spiders', xpPerAction: 202 },
+    // Woodcutting
+    normal: { name: 'Normal Trees', xpPerAction: 25 },
+    oak: { name: 'Oak Trees', xpPerAction: 37.5 },
+    willow: { name: 'Willow Trees', xpPerAction: 67.5 },
+    maple: { name: 'Maple Trees', xpPerAction: 100 },
+    yew: { name: 'Yew Trees', xpPerAction: 175 },
+    magic: { name: 'Magic Trees', xpPerAction: 250 },
+    redwood: { name: 'Redwood Trees', xpPerAction: 380 },
+    // Cooking
+    bread: { name: 'Bread', xpPerAction: 40 },
+    stew: { name: 'Stew', xpPerAction: 60 },
+    curry: { name: 'Curry', xpPerAction: 280 },
+    pizza: { name: 'Pizza', xpPerAction: 175 },
+    bake: { name: 'Baked Goods', xpPerAction: 65 },
+    cook: { name: 'Cooking (Mixed)', xpPerAction: 120 }
 };
 
 // Calculate cumulative chance given number of actions

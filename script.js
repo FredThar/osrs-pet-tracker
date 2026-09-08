@@ -65,7 +65,7 @@ const methodData = {
     penguin: { name: 'Penguin Course', xpPerAction: 722 },
     seers: { name: 'Seers\' Village', xpPerAction: 570 },
     pollnivneach: { name: 'Pollnivneach', xpPerAction: 463 },
-    rellekka: { name: 'Rellekka', xpPerAction: 1,114 },
+    rellekka: { name: 'Rellekka', xpPerAction: 1114 },
     ardougne: { name: 'Ardougne Course', xpPerAction: 793.5 }
 };
 
